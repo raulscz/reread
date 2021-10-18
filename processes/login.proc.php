@@ -8,11 +8,16 @@ $psswd=$_REQUEST['password'];
 $email=mysqli_real_escape_string($conn,$email);
 
 $user = mysqli_query($conn,"SELECT * FROM Users WHERE Email='$email' and Pass=MD5('{$psswd}')");
+$username = mysqli_query($conn,"SELECT Users.Name FROM Users WHERE Email='$email' and Pass=MD5('{$psswd}')");
 
+$result=mysqli_fetch_all($username);
+foreach($result as $row=>$fila){
+    $nombre=$fila[0];
+}
 if (mysqli_num_rows($user) == 1) {
     // coincidencia de credenciales
     session_start();
-    $_SESSION['email']=$email;
+    $_SESSION['name']=$nombre;
     header("location: ../view/zona.admin.php");
 } else {
     // usuario o contraseña erróneos

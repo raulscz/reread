@@ -15,15 +15,16 @@
 
 <body>
     <?php
-    include '../services/connection.php';
+    include '../services/connection.php';    
     session_start();
     /* Controla que la sesión esté iniciada */
-    if (!isset($_SESSION['email'])) {
+    if (!isset($_SESSION['name'])) {
         header('Location: login.html');
     }
+    
     ?>
     <ul class="padding-lat">
-        <li><a>Hola <?php echo $_SESSION['email'];?></a></li>
+        <li><a>Hola <?php echo $_SESSION['name'];?></a></li>
         <li class="right">
             <a href="../processes/logout.proc.php">Logout</a>
         </li>
