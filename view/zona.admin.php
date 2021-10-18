@@ -51,7 +51,24 @@
                     <th>Autor</th>
                 </tr>
                 <!-- Recoger libros de la base de datos -->
- 
+                <?php
+                if (isset($_REQUEST['filtro'])) {
+                    $variable=$_REQUEST['titulo'];
+                    if($variable==""){
+                        $sql="SELECT books.Title, books.Description, authors.Name FROM books INNER JOIN booksauthors ON books.Id=booksauthors.BookId INNER JOIN authors ON booksauthors.AuthorId = authors.Id;";
+                    }else{
+                        $sql="SELECT books.Title, books.Description, authors.Name FROM books INNER JOIN booksauthors ON books.Id=booksauthors.BookId INNER JOIN authors ON booksauthors.AuthorId = authors.Id WHERE books.Title LIKE '%$variable%'";
+                    }   
+                }
+                $result = mysqli_query($conn,$sql);
+                foreach ($result as $registro){
+                ?>
+                    <tr>
+                        <td><?php echo"$registro[Title]";?></td>
+                        <td><?php echo"$registro[Description]";?></td>
+                        <td><?php echo"$registro[Name]";?></td>
+                    </tr>
+                <?php }?> 
             </table>
         </div>
     </div>

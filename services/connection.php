@@ -3,7 +3,7 @@
 
 $host = "localhost";
 $user = "root";
-$pass = "1qaz2wsx3EDC";
+$pass = "";
 $db = "reread-admin";
 
 // Crear la conexión
