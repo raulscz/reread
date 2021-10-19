@@ -53,6 +53,7 @@
                 </tr>
                 <!-- Recoger libros de la base de datos -->
                 <?php
+                
                 if (isset($_REQUEST['filtro'])) {
                     $variable=$_REQUEST['titulo'];
                     if($variable==""){
