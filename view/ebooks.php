@@ -31,13 +31,43 @@
             
             <div class="textpage">
                 <h3>Toda la actualidad en eBook</h3>
-                <?php
+                <form action="ebooks.php" method="POST">
+                    <?php
                         require_once '../services/connection.php';
+                        $sql="SELECT authors.Country FROM `authors` group by authors.Country;";
+                        $resultado = mysqli_query($conn,$sql);
+                        foreach ($resultado as $filas){ 
+                    ?>
+                    <p>Autor</p>
+                    <input type="text" name="autor" placeholder="Nombre del autor a filtrar">
+                    <p>País</p>
+                    <select name="paises">
+                        <option value="2"><?php echo"$filas[Country]";?></option>
+                        
+                    </select>   
+                    <?php } ?>            
+                    <p><input type="submit" value="filtrar" name="filtro"><p>    
+                                   
+                </form>
+  
+                    <?php          
 
-                        $sql= "SELECT books.Title, books.Description, books.img FROM `books` WHERE books.eBook = 1";
+                        $sql= "SELECT books.Title, books.Description, books.img, authors.Name, authors.Country FROM books INNER JOIN booksauthors ON books.Id=booksauthors.BookId INNER JOIN authors ON booksauthors.AuthorId = authors.Id WHERE books.eBook = 1;";
+                        if(isset($_REQUEST['filtro'])){
+                            $autor=$_REQUEST['autor'];
+                            $pais=$_REQUEST['paises'];
+                            if($autor=="" && $pais=""){
+                                $sql= "SELECT books.Title, books.Description, books.img, authors.Name, authors.Country FROM books INNER JOIN booksauthors ON books.Id=booksauthors.BookId INNER JOIN authors ON booksauthors.AuthorId = authors.Id WHERE books.eBook = 1;";
+                            }else if(!empty($autor)){
+                                $sql="SELECT books.Title, books.Description, books.img, authors.Name, authors.Country FROM books INNER JOIN booksauthors ON books.Id=booksauthors.BookId INNER JOIN authors ON booksauthors.AuthorId = authors.Id WHERE authors.Name LIKE '%$autor%';";
+                            }else if(!empty($pais)){
+                                $sql="SELECT books.Title, books.Description, books.img, authors.Name, authors.Country FROM books INNER JOIN booksauthors ON books.Id=booksauthors.BookId INNER JOIN authors ON booksauthors.AuthorId = authors.Id WHERE authors.Country LIKE '%$pais%';";
+                            }else{
+                                $sql="SELECT books.Title, books.Description, books.img, authors.Name, authors.Country FROM books INNER JOIN booksauthors ON books.Id=booksauthors.BookId INNER JOIN authors ON booksauthors.AuthorId = authors.Id WHERE authors.Name LIKE '%$autor%' AND authors.Country LIKE '%$pais%';";
+                            }                            
+                        }
                         $result = mysqli_query($conn,$sql);
-
-                        foreach ($result as $registro){             
+                        foreach ($result as $registro){                                     
                     ?>
                 <div class="gallery">
                     <img src="../img/<?php echo"$registro[img]";?>">
@@ -64,7 +94,7 @@
                     <img src="" alt="Mientras escribo">
                     <div class="desc">Pocas veces un libro sobre el oficio de escribir ha resultado tan clarificador, útil y revelador.</div>
                 </div> -->
-                
+                 
             </div>
         </div>
         <div class="column side">
