@@ -52,6 +52,7 @@
                 </tr>
                 <!-- Recoger libros de la base de datos -->
                 <?php
+                $sql="SELECT books.Title, books.Description, authors.Name FROM books INNER JOIN booksauthors ON books.Id=booksauthors.BookId INNER JOIN authors ON booksauthors.AuthorId = authors.Id;";
                 if (isset($_REQUEST['filtro'])) {
                     $variable=$_REQUEST['titulo'];
                     if($variable==""){
