@@ -14,6 +14,9 @@
 
     <div class="logo">
         <h1>Re-Read</h1>
+        <div class="iniciar">
+            <a href="../view/login.html">Iniciar Sesión</a>
+        </div>        
     </div>
 
     <div class="header">
