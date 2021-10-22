@@ -36,31 +36,35 @@
                         require_once '../services/connection.php';
                         $sql="SELECT authors.Country FROM `authors` group by authors.Country;";
                         $resultado = mysqli_query($conn,$sql);
-                        foreach ($resultado as $filas){ 
+                        
                     ?>
                     <p>Autor</p>
                     <input type="text" name="autor" placeholder="Nombre del autor a filtrar">
                     <p>País</p>
-                    <select name="paises">
-                        <option value="2"><?php echo"$filas[Country]";?></option>
-                        
+                    <select name="paises">    
+                        <option value="">Todos los países</option>
+                        <?php foreach ($resultado as $filas){ ?>                  
+                        <option value="<?php echo "$filas[Country]" ;?>"><?php echo "$filas[Country]";?></option>
+                        <?php } ?> 
                     </select>   
-                    <?php } ?>            
+                   
                     <p><input type="submit" value="filtrar" name="filtro"><p>    
-                                   
+                             
                 </form>
-  
+                
                     <?php          
 
                         $sql= "SELECT books.Title, books.Description, books.img, authors.Name, authors.Country FROM books INNER JOIN booksauthors ON books.Id=booksauthors.BookId INNER JOIN authors ON booksauthors.AuthorId = authors.Id WHERE books.eBook = 1;";
                         if(isset($_REQUEST['filtro'])){
                             $autor=$_REQUEST['autor'];
                             $pais=$_REQUEST['paises'];
+                            // echo $pais;
+                            // die();
                             if($autor=="" && $pais=""){
                                 $sql= "SELECT books.Title, books.Description, books.img, authors.Name, authors.Country FROM books INNER JOIN booksauthors ON books.Id=booksauthors.BookId INNER JOIN authors ON booksauthors.AuthorId = authors.Id WHERE books.eBook = 1;";
-                            }else if(!empty($autor)){
+                            }else if(!empty($autor) && $pais=""){
                                 $sql="SELECT books.Title, books.Description, books.img, authors.Name, authors.Country FROM books INNER JOIN booksauthors ON books.Id=booksauthors.BookId INNER JOIN authors ON booksauthors.AuthorId = authors.Id WHERE authors.Name LIKE '%$autor%';";
-                            }else if(!empty($pais)){
+                            }else if(!empty($pais) && $autor=""){
                                 $sql="SELECT books.Title, books.Description, books.img, authors.Name, authors.Country FROM books INNER JOIN booksauthors ON books.Id=booksauthors.BookId INNER JOIN authors ON booksauthors.AuthorId = authors.Id WHERE authors.Country LIKE '%$pais%';";
                             }else{
                                 $sql="SELECT books.Title, books.Description, books.img, authors.Name, authors.Country FROM books INNER JOIN booksauthors ON books.Id=booksauthors.BookId INNER JOIN authors ON booksauthors.AuthorId = authors.Id WHERE authors.Name LIKE '%$autor%' AND authors.Country LIKE '%$pais%';";
