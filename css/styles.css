@@ -313,6 +313,10 @@ input[type=password] {
     background-color: #4caf4f5a;
 }
 
+.rojo {
+    border: solid 1px #ff0000 !important;
+}
+
 
 /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
 
